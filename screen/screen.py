@@ -2,11 +2,11 @@ import pyglet
 
 
 class Screen(pyglet.window.Window):
-    def __init__(self, width=1680, height=1120, title="NoName", fixed=False):
-        super().__init__(width, height, title)
+    def __init__(self, width=240, height=160, title="NoName", fixed=False):
+        super().__init__(width*7, height*7, title)
         if fixed:
-            super().set_minimum_size(1680, 1120)
-            super().set_maximum_size(1024, 768)
+            super().set_maximum_size(width*7, height*7)
+            super().set_minimum_size(width*7, height*7)
 
     def set_pixel(self, color):
         pass

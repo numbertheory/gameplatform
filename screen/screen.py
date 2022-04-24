@@ -21,7 +21,7 @@ class Screen(pyglet.window.Window):
         _width = self.width - 1
         _height = self.height - 1
         _x = x * self.factor
-        _y = ((y + 159) * self.factor)
+        _y = ((y*-1 + 159) * self.factor)
         f = self.factor
         return [(_width * f) - _width * f + _x,
                 (_height * f) - _height * f + _y]

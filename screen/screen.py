@@ -6,6 +6,7 @@ class Screen(pyglet.window.Window):
     def __init__(self, width=240, height=160,
                  factor=6, title="NoName", fixed=False):
         super().__init__(width*factor, height*factor, title)
+        self.time = 0
         self.batch = pyglet.graphics.Batch()
         self.height = height
         self.width = width
@@ -33,6 +34,11 @@ class Screen(pyglet.window.Window):
                            pixel[1],
                            self.factor, self.factor,
                            color=color, batch=self.batch))
+
+    def update(self, delta_time):
+        self.time += delta_time
+        self.clear()
+        self.batch.draw()
 
     def on_draw(self):
         """Clear the screen and draw shapes"""

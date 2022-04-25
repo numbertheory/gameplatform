@@ -21,8 +21,8 @@ def load_sprite(location):
 
 
 def update(dt):
-    load_sprite([200, 200])
-    on_draw()
+    load_sprite([50, 50])
+    main_screen.on_draw()
 
 
 if __name__ == "__main__":

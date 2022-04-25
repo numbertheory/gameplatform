@@ -39,6 +39,7 @@ class Screen(pyglet.window.Window):
                               color=color, batch=self.batch))
 
     def add_sprite(self, data, location):
+        self.pixel = []
         palette = data.get("palette")
         shape = data.get("shape", [])
         max_row_size = 0

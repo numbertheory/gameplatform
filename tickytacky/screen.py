@@ -50,12 +50,13 @@ class Screen(pyglet.window.Window):
         palette = self.sprites[name]["data"].get("palette")
         shape = self.sprites[name]["data"].get("shape", [])
         max_row_size = 0
-        for r in range(0, len(shape)):
-            for c in range(0, len(shape[r])):
-                if max_row_size < len(shape[r]):
-                    max_row_size = len(shape[r])
-                self.set_pixel(pixel=(location[0] + c, location[1] + r),
-                               color=palette.get(shape[r][c]))
+        if self.sprites[name]["location"]:
+            for r in range(0, len(shape)):
+                for c in range(0, len(shape[r])):
+                    if max_row_size < len(shape[r]):
+                        max_row_size = len(shape[r])
+                    self.set_pixel(pixel=(location[0] + c, location[1] + r),
+                                   color=palette.get(shape[r][c]))
         self.sprites[name]["location"] = [location[0], location[1]]
         self.batch.draw()
 

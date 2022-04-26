@@ -1,15 +1,11 @@
 import pyglet
 from tickytacky.screen import Screen
-import json
+from tickytacky.sprite import Sprite
 
-with open("snail_sprite.json", "r") as json_file:
-    snail = json.load(json_file)
-
+sprites = Sprite(["snail_sprite.json"])
 main_screen = Screen(title="game",
                      fixed=True,
-                     pixel_sprites=[{"name": "snail",
-                                     "data": snail,
-                                     "location": [10, 10]}])
+                     pixel_sprites=sprites.pixel_sprites)
 
 
 def init():

@@ -4,7 +4,8 @@ from pyglet import shapes
 
 class Screen(pyglet.window.Window):
     def __init__(self, width=240, height=160,
-                 factor=6, title="NoName", fixed=False):
+                 factor=6, title="NoName", fixed=False,
+                 pixel_sprites=[]):
         super().__init__(width*factor, height*factor, title)
         self.time = 0
         self.batch = pyglet.graphics.Batch()
@@ -13,6 +14,12 @@ class Screen(pyglet.window.Window):
         self.factor = factor
         self.title = title
         self.pixel = []
+        self.sprites = dict()
+        for sprite in pixel_sprites:
+            self.sprites[sprite["name"]] = {
+                "name": sprite.get("name"),
+                "data": sprite.get("data"),
+                "location": sprite.get("location")}
 
         if fixed:
             super().set_maximum_size(width*factor, height*factor)
@@ -38,10 +45,10 @@ class Screen(pyglet.window.Window):
                               self.factor, self.factor,
                               color=color, batch=self.batch))
 
-    def add_sprite(self, data, location):
+    def add_sprite(self, name, location):
         self.pixel = []
-        palette = data.get("palette")
-        shape = data.get("shape", [])
+        palette = self.sprites[name]["data"].get("palette")
+        shape = self.sprites[name]["data"].get("shape", [])
         max_row_size = 0
         for r in range(0, len(shape)):
             for c in range(0, len(shape[r])):
@@ -49,6 +56,7 @@ class Screen(pyglet.window.Window):
                     max_row_size = len(shape[r])
                 self.set_pixel(pixel=(location[0] + c, location[1] + r),
                                color=palette.get(shape[r][c]))
+        self.sprites[name]["location"] = [location[0], location[1]]
         self.batch.draw()
 
     def on_draw(self):

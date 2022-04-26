@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    function gridRowEven (container) {
+      for (let i = 0; i < 16; i++) {
+        var gridContainer = document.getElementById(container)
+        cell = document.createElement("div")
+        cell.innerHTML = "&nbsp;"
+        if (((i % 2) == 0)) {
+            cell.style.backgroundColor = "#FFFFFF";
+        } else {
+            cell.style.backgroundColor = "#bcd4e6";
+        }
+        gridContainer.appendChild(cell, gridContainer)
+
+    }
+  }
+  function gridRowOdd (container) {
+    for (let i = 0; i < 16; i++) {
+      var gridContainer = document.getElementById(container)
+      cell = document.createElement("div")
+      cell.innerHTML = "&nbsp;"
+      if (((i % 2) == 0)) {
+          cell.style.backgroundColor = "#bcd4e6";
+      } else {
+          cell.style.backgroundColor = "#FFFFFF";
+      }
+      gridContainer.appendChild(cell, gridContainer)
+
+  }
+}
+
+  gridRowEven("row1")
+  gridRowOdd("row2")
+  gridRowEven("row3")
+  gridRowOdd("row4")
+  gridRowEven("row5")
+  gridRowOdd("row6")
+  gridRowEven("row7")
+  gridRowOdd("row8")
+  gridRowEven("row9")
+  gridRowOdd("row10")
+  gridRowEven("row11")
+  gridRowOdd("row12")
+  gridRowEven("row13")
+  gridRowOdd("row14")
+  gridRowEven("row15")
+  gridRowOdd("row16")
+
+});
+</script>
+
+<style>
+.grid-container {
+  display: flex;
+  background-color: #2196F3;
+  width: 640px;
+}
+
+.palette-form {
+  display: flex;
+  background-color: #2196F3;
+}
+
+.palette-head {
+  display: flex;
+  width: 640px;
+}
+
+.palette-header {
+  font-size: 15px;
+  flex: 1;
+  flex-grow: 10;
+}
+
+.palette-entry {
+  display: flex;
+  width: 640px;
+}
+
+.palette-entry div {
+  font-size: 15px;
+  flex: 1;
+  flex-grow: 10;
+}
+
+.grid-container div {
+  font-size: 30px;
+  width: 40px;
+  height: 40px;
+  flex: 1;
+}
+</style>
+</head>
+<body>
+  <input type="color"
+    id="html5colorpicker"
+    style="width:90px;height:90px;position:absolute;right:300px;"
+    value="#ff0000"
+  >
+<div id="row1" class="grid-container">
+</div>
+<div id="row2" class="grid-container">
+</div>
+<div id="row3" class="grid-container">
+</div>
+<div id="row4" class="grid-container">
+</div>
+<div id="row5" class="grid-container">
+</div>
+<div id="row6" class="grid-container">
+</div>
+<div id="row7" class="grid-container">
+</div>
+<div id="row8" class="grid-container">
+</div>
+<div id="row9" class="grid-container">
+</div>
+<div id="row10" class="grid-container">
+</div>
+<div id="row11" class="grid-container">
+</div>
+<div id="row12" class="grid-container">
+</div>
+<div id="row13" class="grid-container">
+</div>
+<div id="row14" class="grid-container">
+</div>
+<div id="row15" class="grid-container">
+</div>
+<div id="row16" class="grid-container">
+</div>
+<div id="palette-form" class="palette">
+  <div class="palette-head">
+    <div class="palette-header">Select Color</div>
+    <div class="palette-header">Name of Color</div>
+    <div class="palette-header">Swatch</div>
+  </div>
+    <div class="palette-entry">
+      <div>
+      <input type="radio" name="colorSelect">
+      </div>
+      <div>
+        RED
+      </div>
+      <div class="palette-entry">SWATCH</div>
+    </div>
+    <div class="palette-entry">
+      <div>
+      <input type="radio" name="colorSelect">
+      </div>
+      <div>
+        BLUE
+      </div>
+      <div class="palette-entry">SWATCH</div>
+    </div>
+
+</div>
+</body>
+</html>

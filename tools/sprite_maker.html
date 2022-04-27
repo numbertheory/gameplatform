@@ -10,6 +10,7 @@
         cell.setAttribute("onclick", "paintPixel('" + container + "col" + i + "')")
         cell.setAttribute("id", container + "col" + i)
         cell.setAttribute("class", "pixel")
+        cell.setAttribute("painted", "bg")
         cell.innerHTML = "&nbsp;"
         if (((i % 2) == 0)) {
             cell.style.backgroundColor = "#FFFFFF";
@@ -29,6 +30,7 @@
       cell.setAttribute("onclick", "paintPixel('" + container + "col" + i + "')")
       cell.setAttribute("id", container + "col" + i)
       cell.setAttribute("class", "pixel")
+      cell.setAttribute("painted", "bg")
       cell.innerHTML = "&nbsp;"
       if (((i % 2) == 0)) {
           cell.style.backgroundColor = "#edf2f8";
@@ -62,7 +64,6 @@
 });
 function createPaletteEntry (colorNameDef) {
   var currentColor = document.getElementById("html5colorpicker").value
-  console.log(currentColor)
   var swatchExists = !!document.getElementById(
     "palette-entry-" + currentColor.replace("#", "")
     );
@@ -80,8 +81,8 @@ function createPaletteEntry (colorNameDef) {
       colorNameDiv.innerHTML = "<input type=\"text\" value='"+ colorNameDef +"' name=\"cname\"/>"
       var colorSwatch = document.createElement("div")
       colorSwatch.setAttribute("class", "palette-entry-swatch")
-      colorSwatch.innerHTML = "<div style=\"background-color:" + currentColor +
-      "\">SWATCH</div>"
+      colorSwatch.innerHTML = "<div class=\"swatch\" style=\"background-color:" + currentColor +
+      "\"> &nbsp; </div>"
       var delColor = document.createElement("div")
       delColor.setAttribute("class", "palette-entry-swatch")
       delColor.innerHTML = "<button onclick=\"deletePaletteEntry('" +
@@ -121,6 +122,31 @@ function paintPixel (pixel) {
     };
   }
   document.getElementById(pixel).style.backgroundColor = "#" + colorSelected
+  document.getElementById(pixel).setAttribute("painted", "#" + colorSelected)
+
+}
+
+function clipboardCopyResult () {
+  var swatches = document.querySelectorAll(".swatch")
+  var colorNames = document.querySelectorAll('input[name="cname"]')
+  var result = {"palette": {}, "shape": [
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill("")
+  ]};
+  for (let i = 0; i < swatches.length; i++) {
+    var rgbList = swatches[i].style.backgroundColor.match(/\d+/g);
+    result["palette"][colorNames[i].value] = rgbList
+  }
+  for (let i = 1; i < 17; i++) {
+    for (let j = 1; j < 17; j++) {
+      var pixel = document.getElementById("row" + i + "col" + j)
+      result["shape"][i - 1][j - 1] = pixel.getAttribute("painted").replace("#", "")
+    }
+  }
+  console.log(result)
+  navigator.clipboard.writeText("Javascript Rocks");
 }
 
 </script>
@@ -151,6 +177,12 @@ function paintPixel (pixel) {
   display: flex;
   width: 140px;
   padding: 0 10px 10px 0;
+}
+
+.swatch {
+  flex: 1;
+  width: 20px;
+  height: 20px;
 }
 
 .palette-entry-radio {
@@ -188,6 +220,9 @@ function paintPixel (pixel) {
   <button
     style="width:90px;height:90px;position:absolute;left:780px;"
     onclick="createPaletteEntry()">Create Color Option</button>
+  <button
+    style="width:90px;height:90px;position:absolute;left:880px;"
+    onclick="clipboardCopyResult()">Copy JSON to Clipboard</button>
 <div id="row1" class="grid-container">
 </div>
 <div id="row2" class="grid-container">
@@ -221,7 +256,15 @@ function paintPixel (pixel) {
 <div id="row16" class="grid-container">
 </div>
 <div id="palette-form" class="palette">
+  <div class="palette-entry">
+    <div class="palette-entry-radio">
+    <input id="radio-entry-eraser" type="radio" name="colorSelect">
+    </div>
+    <div class="palette-entry-text">
+    ERASER
+    </div>
 
+  </div>
 </div>
 </body>
 </html>

@@ -121,7 +121,12 @@ function paintPixel (pixel) {
       var colorSelected = swatches[i].getAttribute("id").replace("radio-entry-", "")
     };
   }
-  document.getElementById(pixel).style.backgroundColor = "#" + colorSelected
+  if (colorSelected == "eraser") {
+    document.getElementById(pixel).style.backgroundColor = document.getElementById(pixel).getAttribute("defaultbackground")
+  } else {
+    document.getElementById(pixel).style.backgroundColor = "#" + colorSelected
+  }
+
   document.getElementById(pixel).setAttribute("painted", "#" + colorSelected)
 
 }
@@ -137,12 +142,35 @@ function clipboardCopyResult () {
   ]};
   for (let i = 0; i < swatches.length; i++) {
     var rgbList = swatches[i].style.backgroundColor.match(/\d+/g);
+    for (let k = 0; k < rgbList.length; k++) {
+      rgbList[k] =  parseInt(rgbList[k])
+    }
     result["palette"][colorNames[i].value] = rgbList
   }
   for (let i = 1; i < 17; i++) {
     for (let j = 1; j < 17; j++) {
       var pixel = document.getElementById("row" + i + "col" + j)
-      result["shape"][i - 1][j - 1] = pixel.getAttribute("painted").replace("#", "")
+      if (pixel.getAttribute("painted") == "#eraser") {
+        result["shape"][i - 1][j - 1] = "bg"
+      } else {
+        if (pixel.getAttribute("painted") == "bg") {
+          result["shape"][i - 1][j - 1] = "bg"
+        } else {
+          // Find the name of the color
+          var rgbVals = pixel.style.backgroundColor.match(/\d+/g)
+          for (let k = 0; k < rgbVals.length; k++) {
+            rgbVals[k] = parseInt(rgbVals[k])
+          }
+
+          const keys = Object.keys(result["palette"])
+          keys.forEach((key, index) => {
+            if (rgbVals.toString() == result["palette"][key].toString()) {
+              result["shape"][i - 1][j - 1] = key
+          }});
+
+        }
+      }
+
     }
   }
   console.log(result)

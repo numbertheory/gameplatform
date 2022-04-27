@@ -134,7 +134,8 @@ function paintPixel (pixel) {
 function clipboardCopyResult () {
   var swatches = document.querySelectorAll(".swatch")
   var colorNames = document.querySelectorAll('input[name="cname"]')
-  var result = {"palette": {}, "shape": [
+  var result = {"name": document.getElementById("spriteName").value,
+    "palette": {}, "shape": [
     Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
     Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
     Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
@@ -173,8 +174,7 @@ function clipboardCopyResult () {
 
     }
   }
-  console.log(result)
-  navigator.clipboard.writeText("Javascript Rocks");
+  navigator.clipboard.writeText(JSON.stringify(result, null, '\t'));
 }
 
 </script>
@@ -226,6 +226,12 @@ function clipboardCopyResult () {
 }
 
 .palette-entry-swatch {
+  font-size: 15px;
+  flex: 1;
+  padding: 0 10px 10px 0;
+}
+
+.palette-name {
   font-size: 15px;
   flex: 1;
   padding: 0 10px 10px 0;
@@ -284,6 +290,10 @@ function clipboardCopyResult () {
 <div id="row16" class="grid-container">
 </div>
 <div id="palette-form" class="palette">
+  <div class="palette-name">
+  <label for="lname">Sprite Name: </label>
+  <input type="text" id="spriteName" name="spriteName">
+  </div>
   <div class="palette-entry">
     <div class="palette-entry-radio">
     <input id="radio-entry-eraser" type="radio" name="colorSelect">

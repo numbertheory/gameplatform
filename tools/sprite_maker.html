@@ -132,6 +132,10 @@ function paintPixel (pixel) {
 }
 
 function clipboardCopyResult () {
+  if (document.getElementById("spriteName").value == "") {
+    alert("You should name the sprite something.")
+    return
+  }
   var swatches = document.querySelectorAll(".swatch")
   var colorNames = document.querySelectorAll('input[name="cname"]')
   var result = {"name": document.getElementById("spriteName").value,

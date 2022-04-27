@@ -11,7 +11,7 @@
         if (((i % 2) == 0)) {
             cell.style.backgroundColor = "#FFFFFF";
         } else {
-            cell.style.backgroundColor = "#bcd4e6";
+            cell.style.backgroundColor = "#edf2f8";
         }
         gridContainer.appendChild(cell, gridContainer)
 
@@ -23,7 +23,7 @@
       cell = document.createElement("div")
       cell.innerHTML = "&nbsp;"
       if (((i % 2) == 0)) {
-          cell.style.backgroundColor = "#bcd4e6";
+          cell.style.backgroundColor = "#edf2f8";
       } else {
           cell.style.backgroundColor = "#FFFFFF";
       }
@@ -31,7 +31,6 @@
 
   }
 }
-
   gridRowEven("row1")
   gridRowOdd("row2")
   gridRowEven("row3")
@@ -50,6 +49,47 @@
   gridRowOdd("row16")
 
 });
+function createPaletteEntry () {
+  var currentColor = document.getElementById("html5colorpicker").value
+  console.log(currentColor)
+  var swatchExists = !!document.getElementById(
+    "palette-entry-" + currentColor.replace("#", "")
+    );
+  if (swatchExists) {
+    alert('Swatch already exists.')
+  } else {
+
+      var paletteForm = document.getElementById("palette-form")
+      var paletteEntry = document.createElement("div")
+      var radioDiv = document.createElement("div")
+      radioDiv.setAttribute("class", "palette-entry-radio")
+      radioDiv.innerHTML = "<input type=\"radio\" name=\"colorSelect\">"
+      var colorNameDiv = document.createElement("div")
+      colorNameDiv.setAttribute("class", "palette-entry-text")
+      colorNameDiv.innerHTML = "<input type=\"text\" name=\"cname\"/>"
+      var colorSwatch = document.createElement("div")
+      colorSwatch.setAttribute("class", "palette-entry-swatch")
+      colorSwatch.innerHTML = "<div style=\"background-color:" + currentColor +
+      "\">SWATCH</div>"
+      var delColor = document.createElement("div")
+      delColor.setAttribute("class", "palette-entry-swatch")
+      delColor.innerHTML = "<button onclick=\"deletePaletteEntry('" +
+      "palette-entry-" + currentColor.replace("#", "")
+       + "')\">❌</button>"
+      paletteEntry.setAttribute("class", "palette-entry")
+      paletteEntry.setAttribute("id", "palette-entry-" + currentColor.replace("#", ""))
+      paletteEntry.appendChild(radioDiv, paletteEntry)
+      paletteEntry.appendChild(colorNameDiv, paletteEntry)
+      paletteEntry.appendChild(colorSwatch, paletteEntry)
+      paletteEntry.appendChild(delColor, paletteEntry)
+      paletteForm.appendChild(paletteEntry, paletteForm)
+  }
+
+}
+function deletePaletteEntry (entry) {
+  document.getElementById(entry).remove();
+
+}
 </script>
 
 <style>
@@ -62,28 +102,40 @@
 .palette-form {
   display: flex;
   background-color: #2196F3;
+  width: 340px;
 }
 
-.palette-head {
-  display: flex;
-  width: 640px;
-}
+.palette {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  left: 680px;
+  top: 150px;
 
-.palette-header {
-  font-size: 15px;
-  flex: 1;
-  flex-grow: 10;
 }
 
 .palette-entry {
   display: flex;
-  width: 640px;
+  width: 140px;
+  padding: 0 10px 10px 0;
 }
 
-.palette-entry div {
+.palette-entry-radio {
+  flex: 1;
+  width: 40px;
+  padding: 0 10px 10px 0;
+}
+
+.palette-entry-text {
   font-size: 15px;
   flex: 1;
-  flex-grow: 10;
+  padding: 0 10px 10px 0;
+}
+
+.palette-entry-swatch {
+  font-size: 15px;
+  flex: 1;
+  padding: 0 10px 10px 0;
 }
 
 .grid-container div {
@@ -97,9 +149,12 @@
 <body>
   <input type="color"
     id="html5colorpicker"
-    style="width:90px;height:90px;position:absolute;right:300px;"
+    style="width:90px;height:90px;position:absolute;left:680px;"
     value="#ff0000"
   >
+  <button
+    style="width:90px;height:90px;position:absolute;left:780px;"
+    onclick="createPaletteEntry()">Create Color Option</button>
 <div id="row1" class="grid-container">
 </div>
 <div id="row2" class="grid-container">
@@ -133,29 +188,6 @@
 <div id="row16" class="grid-container">
 </div>
 <div id="palette-form" class="palette">
-  <div class="palette-head">
-    <div class="palette-header">Select Color</div>
-    <div class="palette-header">Name of Color</div>
-    <div class="palette-header">Swatch</div>
-  </div>
-    <div class="palette-entry">
-      <div>
-      <input type="radio" name="colorSelect">
-      </div>
-      <div>
-        RED
-      </div>
-      <div class="palette-entry">SWATCH</div>
-    </div>
-    <div class="palette-entry">
-      <div>
-      <input type="radio" name="colorSelect">
-      </div>
-      <div>
-        BLUE
-      </div>
-      <div class="palette-entry">SWATCH</div>
-    </div>
 
 </div>
 </body>

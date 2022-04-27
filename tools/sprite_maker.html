@@ -4,28 +4,38 @@
 <script>
   document.addEventListener("DOMContentLoaded", function(event) {
     function gridRowEven (container) {
-      for (let i = 0; i < 16; i++) {
+      for (let i = 1; i < 17; i++) {
         var gridContainer = document.getElementById(container)
         cell = document.createElement("div")
+        cell.setAttribute("onclick", "paintPixel('" + container + "col" + i + "')")
+        cell.setAttribute("id", container + "col" + i)
+        cell.setAttribute("class", "pixel")
         cell.innerHTML = "&nbsp;"
         if (((i % 2) == 0)) {
             cell.style.backgroundColor = "#FFFFFF";
+            cell.setAttribute("defaultBackground", "#FFFFFF")
         } else {
             cell.style.backgroundColor = "#edf2f8";
+            cell.setAttribute("defaultBackground", "#edf2f8")
         }
         gridContainer.appendChild(cell, gridContainer)
 
     }
   }
   function gridRowOdd (container) {
-    for (let i = 0; i < 16; i++) {
+    for (let i = 1; i < 17; i++) {
       var gridContainer = document.getElementById(container)
       cell = document.createElement("div")
+      cell.setAttribute("onclick", "paintPixel('" + container + "col" + i + "')")
+      cell.setAttribute("id", container + "col" + i)
+      cell.setAttribute("class", "pixel")
       cell.innerHTML = "&nbsp;"
       if (((i % 2) == 0)) {
           cell.style.backgroundColor = "#edf2f8";
+          cell.setAttribute("defaultBackground", "#edf2f8")
       } else {
           cell.style.backgroundColor = "#FFFFFF";
+          cell.setAttribute("defaultBackground", "#FFFFFF")
       }
       gridContainer.appendChild(cell, gridContainer)
 
@@ -47,9 +57,10 @@
   gridRowOdd("row14")
   gridRowEven("row15")
   gridRowOdd("row16")
+  createPaletteEntry("red")
 
 });
-function createPaletteEntry () {
+function createPaletteEntry (colorNameDef) {
   var currentColor = document.getElementById("html5colorpicker").value
   console.log(currentColor)
   var swatchExists = !!document.getElementById(
@@ -63,10 +74,10 @@ function createPaletteEntry () {
       var paletteEntry = document.createElement("div")
       var radioDiv = document.createElement("div")
       radioDiv.setAttribute("class", "palette-entry-radio")
-      radioDiv.innerHTML = "<input type=\"radio\" name=\"colorSelect\">"
+      radioDiv.innerHTML = "<input id='" + "radio-entry-" + currentColor.replace("#", "") + "' type=\"radio\" name=\"colorSelect\">"
       var colorNameDiv = document.createElement("div")
       colorNameDiv.setAttribute("class", "palette-entry-text")
-      colorNameDiv.innerHTML = "<input type=\"text\" name=\"cname\"/>"
+      colorNameDiv.innerHTML = "<input type=\"text\" value='"+ colorNameDef +"' name=\"cname\"/>"
       var colorSwatch = document.createElement("div")
       colorSwatch.setAttribute("class", "palette-entry-swatch")
       colorSwatch.innerHTML = "<div style=\"background-color:" + currentColor +
@@ -83,13 +94,35 @@ function createPaletteEntry () {
       paletteEntry.appendChild(colorSwatch, paletteEntry)
       paletteEntry.appendChild(delColor, paletteEntry)
       paletteForm.appendChild(paletteEntry, paletteForm)
+      document.getElementById("radio-entry-" + currentColor.replace("#", "")).checked = true
   }
 
 }
-function deletePaletteEntry (entry) {
-  document.getElementById(entry).remove();
 
+function deletePaletteEntry (entry) {
+  var pixels = document.querySelectorAll(".pixel")
+  var entryLower = "#" + entry.replace("palette-entry-", "").toLowerCase()
+  for (let i = 0; i < pixels.length; i++) {
+    var hexColor = pixels[i].style.backgroundColor.match(/\d+/g);
+    var rgb = (hexColor[0] << 16) | (hexColor[1] << 8) | hexColor[2]
+    var realHex = '#' + rgb.toString(16).padStart(6, 0)
+    if (realHex == entryLower) {
+      pixels[i].style.backgroundColor = pixels[i].getAttribute("defaultBackground")
+    }
+  }
+  document.getElementById(entry).remove();
 }
+
+function paintPixel (pixel) {
+  var swatches = document.querySelectorAll('input[name="colorSelect"]');
+  for (let i = 0; i < swatches.length; i++) {
+    if (swatches[i].checked){
+      var colorSelected = swatches[i].getAttribute("id").replace("radio-entry-", "")
+    };
+  }
+  document.getElementById(pixel).style.backgroundColor = "#" + colorSelected
+}
+
 </script>
 
 <style>

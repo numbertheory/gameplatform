@@ -3,8 +3,8 @@
 <head>
 <script>
   document.addEventListener("DOMContentLoaded", function(event) {
-    function gridRowEven (container) {
-      for (let i = 1; i < 17; i++) {
+    function gridRowEven (container, size) {
+      for (let i = 1; i < size + 1; i++) {
         var gridContainer = document.getElementById(container)
         cell = document.createElement("div")
         cell.setAttribute("onclick", "paintPixel('" + container + "col" + i + "')")
@@ -23,8 +23,8 @@
 
     }
   }
-  function gridRowOdd (container) {
-    for (let i = 1; i < 17; i++) {
+  function gridRowOdd (container, size) {
+    for (let i = 1; i < size + 1; i++) {
       var gridContainer = document.getElementById(container)
       cell = document.createElement("div")
       cell.setAttribute("onclick", "paintPixel('" + container + "col" + i + "')")
@@ -43,25 +43,25 @@
 
   }
 }
-  gridRowEven("row1")
-  gridRowOdd("row2")
-  gridRowEven("row3")
-  gridRowOdd("row4")
-  gridRowEven("row5")
-  gridRowOdd("row6")
-  gridRowEven("row7")
-  gridRowOdd("row8")
-  gridRowEven("row9")
-  gridRowOdd("row10")
-  gridRowEven("row11")
-  gridRowOdd("row12")
-  gridRowEven("row13")
-  gridRowOdd("row14")
-  gridRowEven("row15")
-  gridRowOdd("row16")
+function initgrid(size) {
+  for (let i = 1; i < size + 1; i++) {
+    var body = document.getElementsByTagName("body")[0]
+    var row = document.createElement("div")
+    row.setAttribute("id", "row" + i)
+    row.setAttribute("class", "grid-container")
+    body.appendChild(row, body)
+    if (i % 2 == 0) {
+      gridRowEven("row" + i, size)
+    } else {
+      gridRowOdd("row" + i, size)
+    }
+  }
+}
+  initgrid(32)
   createPaletteEntry("red")
 
 });
+
 function createPaletteEntry (colorNameDef) {
   var currentColor = document.getElementById("html5colorpicker").value
   var swatchExists = !!document.getElementById(
@@ -143,6 +143,10 @@ function clipboardCopyResult () {
     Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
     Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
     Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
     Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill("")
   ]};
   for (let i = 0; i < swatches.length; i++) {
@@ -152,8 +156,8 @@ function clipboardCopyResult () {
     }
     result["palette"][colorNames[i].value] = rgbList
   }
-  for (let i = 1; i < 17; i++) {
-    for (let j = 1; j < 17; j++) {
+  for (let i = 1; i < 33; i++) {
+    for (let j = 1; j < 33; j++) {
       var pixel = document.getElementById("row" + i + "col" + j)
       if (pixel.getAttribute("painted") == "#eraser") {
         result["shape"][i - 1][j - 1] = "bg"
@@ -243,8 +247,8 @@ function clipboardCopyResult () {
 
 .grid-container div {
   font-size: 30px;
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
   flex: 1;
 }
 </style>
@@ -261,38 +265,7 @@ function clipboardCopyResult () {
   <button
     style="width:90px;height:90px;position:absolute;left:880px;"
     onclick="clipboardCopyResult()">Copy JSON to Clipboard</button>
-<div id="row1" class="grid-container">
-</div>
-<div id="row2" class="grid-container">
-</div>
-<div id="row3" class="grid-container">
-</div>
-<div id="row4" class="grid-container">
-</div>
-<div id="row5" class="grid-container">
-</div>
-<div id="row6" class="grid-container">
-</div>
-<div id="row7" class="grid-container">
-</div>
-<div id="row8" class="grid-container">
-</div>
-<div id="row9" class="grid-container">
-</div>
-<div id="row10" class="grid-container">
-</div>
-<div id="row11" class="grid-container">
-</div>
-<div id="row12" class="grid-container">
-</div>
-<div id="row13" class="grid-container">
-</div>
-<div id="row14" class="grid-container">
-</div>
-<div id="row15" class="grid-container">
-</div>
-<div id="row16" class="grid-container">
-</div>
+
 <div id="palette-form" class="palette">
   <div class="palette-name">
   <label for="lname">Sprite Name: </label>

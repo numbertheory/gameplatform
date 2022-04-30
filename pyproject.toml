@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tickytacky"
-version = "0.4.0"
+version = "0.5.0"
 description = "Tickytacky pixel game maker"
 authors = ["JP Etcheber <jetcheber@gmail.com>"]
 license = "GNU General Public License"

@@ -60,6 +60,18 @@ class Screen(pyglet.window.Window):
         self.sprites[name]["location"] = [location[0], location[1]]
         self.batch.draw()
 
+    def text(self,
+             text="",
+             font="Times New Roman",
+             size=36,
+             position=[0, 0],
+             anchors=["center", "center"]):
+        pyglet.text.Label(text,
+                          font_name=font,
+                          font_size=size,
+                          x=position[0], y=position[1],
+                          anchor_x=anchors[0], anchor_y=anchors[1]).draw()
+
     def on_draw(self):
         """Clear the screen and draw shapes"""
         self.clear()

@@ -14,17 +14,12 @@ Examples can be found here, in the examples, repo:
 
 ## Sprite Maker
 
-Open tools/sprite_maker.html in a web browser to use the sprite maker. It's a small
-tool that allows you to draw sprites and copy the code as JSON.
+The sprite library contains a small Flask app you can run to assist with making
+sprites.
 
 Example:
 ```
-firefox tools/sprite_maker16.html
-
-or
-
-firefox tools/sprite_maker32.html
-
+python tickytacky/sprite.py
 ```
 
 1. Select colors from the large color button. It's an HTML5 color selector, so it will
@@ -32,10 +27,12 @@ use your system's color picker to select any color.
 
 2. Click the "Create Color option" to add it to the palette.
 
-3. Choose that color from the palette options and draw with it. Name the color something in the palette.
+3. Choose that color from the palette options and draw with it. By default, the color name
+will show as undefined, but you can change that in the text box.
 
 4. If you remove a color from the palette, all pixels with that color will also be removed.
 
-5. When done drawing, name the sprite and click the "Copy JSON to Clipboard" button. This will put the sprite information into the clipboard in JSON format.
+5. When done drawing, name the sprite and click the "Export" button. This will create a
+new page which will show the JSON format for the sprite you drew.
 
 6. Copy that info into a JSON file in your game.

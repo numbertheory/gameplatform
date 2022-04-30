@@ -37,8 +37,10 @@ sprites.
 
 Example:
 ```
-python tickytacky/sprite.py
+python3 tickytacky/sprite.py
 ```
+
+Then open http://0.0.0.0:5000/ to start using the sprite maker.
 
 1. Select colors from the large color button. It's an HTML5 color selector, so it will
 use your system's color picker to select any color.

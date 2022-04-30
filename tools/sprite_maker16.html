@@ -177,7 +177,8 @@ function clipboardCopyResult () {
 
     }
   }
-  navigator.clipboard.writeText(JSON.stringify(result, null, '\t'));
+  window.open("spriteOutput.html?result=" + JSON.stringify(result))
+  // navigator.clipboard.writeText(JSON.stringify(result, null, '\t'));
 }
 
 </script>
@@ -259,7 +260,7 @@ function clipboardCopyResult () {
     onclick="createPaletteEntry()">Create Color Option</button>
   <button
     style="width:90px;height:90px;position:absolute;left:880px;"
-    onclick="clipboardCopyResult()">Copy JSON to Clipboard</button>
+    onclick="clipboardCopyResult()">Export</button>
 
 <div id="palette-form" class="palette">
   <div class="palette-name">

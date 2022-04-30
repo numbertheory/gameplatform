@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<head>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+  var queryDict = {}
+  location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]})
+  var result = JSON.parse(decodeURIComponent(queryDict['result']));
+  console.log(result["name"])
+  var displayResult = "{ \n  \"name\": \"" + result["name"] + "\",\n  \"palette\": {\n"
+  for (const [key, value] of Object.entries(result["palette"])) {
+    displayResult += "    \"" + key + "\": [" + value[0] + ", " + value[1] + ", "  + value[2] + "],\n"
+  }
+  displayResult += "    \"bg\": null},\n  \"shape\": [\n"
+  for (let i = 0; i < result["shape"].length - 1; i++) {
+    displayResult += "     [" + "\"" + result["shape"][i].join("\",\"") + "\"" + "],\n"
+  }
+  displayResult += "     [" + "\"" + result["shape"][result["shape"].length - 1].join("\",\"") + "\"" + "]\n"
+  displayResult += "]}"
+  document.getElementById("sprite-code").innerHTML = displayResult
+  });
+  </script>
+  </head>
+  <body>
+    <div>
+      <pre id="sprite-code">
+        </pre>
+      </div>
+    </body>
+</html>

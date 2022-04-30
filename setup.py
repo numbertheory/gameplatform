@@ -17,6 +17,7 @@ setup_kwargs = {
     'version': '0.5.0',
     'description': 'Tickytacky pixel game maker',
     'long_description': long_description,
+    'long_description_content_type': 'text/markdown',
     'author': 'JP Etcheber',
     'author_email': 'jetcheber@gmail.com',
     'url': 'https://github.com/numbertheory/tickytacky',

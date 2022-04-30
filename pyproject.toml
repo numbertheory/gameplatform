@@ -9,7 +9,6 @@ license = "GNU General Public License"
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
 pyglet = "^1.5.23"
-pyinstaller = "^5.0.1"
 Flask = "^2.1.2"
 
 [tool.poetry.dev-dependencies]

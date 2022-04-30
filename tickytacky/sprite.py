@@ -10,12 +10,22 @@ app = Flask(__name__, template_folder="../tools/")
 
 @app.route('/')
 def sprite_maker():
-    return render_template('sprite_maker16.html')
+    return render_template('home.html')
 
 
 @app.route('/spriteOutput.html')
 def sprite_output():
     return render_template('spriteOutput.html')
+
+
+@app.route('/sprite_maker16.html')
+def sprite_16():
+    return render_template('sprite_maker16.html')
+
+
+@app.route('/sprite_maker32.html')
+def sprite_32():
+    return render_template('sprite_maker32.html')
 
 
 class Sprite():

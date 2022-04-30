@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<head>
+<script>
+  function resize (size) {
+    var iframeWindow = document.getElementById("spriteFrame")
+    iframeWindow.setAttribute("src", "sprite_maker" + size + ".html")
+  }
+</script>
+</head>
+<body>
+  <button id="sprite16" onclick="resize('16')">16x16</button>
+  <button id="sprite32" onclick="resize('32')">32x32</button>
+  <iframe id="spriteFrame" src="sprite_maker16.html" title="sprite16"
+          style="height:670px;width:95%;border:0px;padding-left:75px;"></iframe>
+</body>
+</html>

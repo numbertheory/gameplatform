@@ -70,6 +70,7 @@ class Screen(pyglet.window.Window):
                           font_name=font,
                           font_size=size,
                           x=position[0], y=position[1],
+                          batch=self.batch,
                           anchor_x=anchors[0], anchor_y=anchors[1]).draw()
 
     def on_draw(self):

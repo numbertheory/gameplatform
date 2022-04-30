@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    function gridRowEven (container, size) {
+      for (let i = 1; i < size + 1; i++) {
+        var gridContainer = document.getElementById(container)
+        cell = document.createElement("div")
+        cell.setAttribute("onclick", "paintPixel('" + container + "col" + i + "')")
+        cell.setAttribute("id", container + "col" + i)
+        cell.setAttribute("class", "pixel")
+        cell.setAttribute("painted", "bg")
+        cell.innerHTML = "&nbsp;"
+        if (((i % 2) == 0)) {
+            cell.style.backgroundColor = "#FFFFFF";
+            cell.setAttribute("defaultBackground", "#FFFFFF")
+        } else {
+            cell.style.backgroundColor = "#edf2f8";
+            cell.setAttribute("defaultBackground", "#edf2f8")
+        }
+        gridContainer.appendChild(cell, gridContainer)
+
+    }
+  }
+  function gridRowOdd (container, size) {
+    for (let i = 1; i < size + 1; i++) {
+      var gridContainer = document.getElementById(container)
+      cell = document.createElement("div")
+      cell.setAttribute("onclick", "paintPixel('" + container + "col" + i + "')")
+      cell.setAttribute("id", container + "col" + i)
+      cell.setAttribute("class", "pixel")
+      cell.setAttribute("painted", "bg")
+      cell.innerHTML = "&nbsp;"
+      if (((i % 2) == 0)) {
+          cell.style.backgroundColor = "#edf2f8";
+          cell.setAttribute("defaultBackground", "#edf2f8")
+      } else {
+          cell.style.backgroundColor = "#FFFFFF";
+          cell.setAttribute("defaultBackground", "#FFFFFF")
+      }
+      gridContainer.appendChild(cell, gridContainer)
+
+  }
+}
+function initgrid(size) {
+  for (let i = 1; i < size + 1; i++) {
+    var body = document.getElementsByTagName("body")[0]
+    var row = document.createElement("div")
+    row.setAttribute("id", "row" + i)
+    row.setAttribute("class", "grid-container")
+    body.appendChild(row, body)
+    if (i % 2 == 0) {
+      gridRowEven("row" + i, size)
+    } else {
+      gridRowOdd("row" + i, size)
+    }
+  }
+}
+  initgrid(16)
+  createPaletteEntry("red")
+
+});
+
+function createPaletteEntry (colorNameDef) {
+  var currentColor = document.getElementById("html5colorpicker").value
+  var swatchExists = !!document.getElementById(
+    "palette-entry-" + currentColor.replace("#", "")
+    );
+  if (swatchExists) {
+    alert('Swatch already exists.')
+  } else {
+
+      var paletteForm = document.getElementById("palette-form")
+      var paletteEntry = document.createElement("div")
+      var radioDiv = document.createElement("div")
+      radioDiv.setAttribute("class", "palette-entry-radio")
+      radioDiv.innerHTML = "<input id='" + "radio-entry-" + currentColor.replace("#", "") + "' type=\"radio\" name=\"colorSelect\">"
+      var colorNameDiv = document.createElement("div")
+      colorNameDiv.setAttribute("class", "palette-entry-text")
+      colorNameDiv.innerHTML = "<input type=\"text\" value='"+ colorNameDef +"' name=\"cname\"/>"
+      var colorSwatch = document.createElement("div")
+      colorSwatch.setAttribute("class", "palette-entry-swatch")
+      colorSwatch.innerHTML = "<div class=\"swatch\" style=\"background-color:" + currentColor +
+      "\"> &nbsp; </div>"
+      var delColor = document.createElement("div")
+      delColor.setAttribute("class", "palette-entry-swatch")
+      delColor.innerHTML = "<button onclick=\"deletePaletteEntry('" +
+      "palette-entry-" + currentColor.replace("#", "")
+       + "')\">❌</button>"
+      paletteEntry.setAttribute("class", "palette-entry")
+      paletteEntry.setAttribute("id", "palette-entry-" + currentColor.replace("#", ""))
+      paletteEntry.appendChild(radioDiv, paletteEntry)
+      paletteEntry.appendChild(colorNameDiv, paletteEntry)
+      paletteEntry.appendChild(colorSwatch, paletteEntry)
+      paletteEntry.appendChild(delColor, paletteEntry)
+      paletteForm.appendChild(paletteEntry, paletteForm)
+      document.getElementById("radio-entry-" + currentColor.replace("#", "")).checked = true
+  }
+
+}
+
+function deletePaletteEntry (entry) {
+  var pixels = document.querySelectorAll(".pixel")
+  var entryLower = "#" + entry.replace("palette-entry-", "").toLowerCase()
+  for (let i = 0; i < pixels.length; i++) {
+    var hexColor = pixels[i].style.backgroundColor.match(/\d+/g);
+    var rgb = (hexColor[0] << 16) | (hexColor[1] << 8) | hexColor[2]
+    var realHex = '#' + rgb.toString(16).padStart(6, 0)
+    if (realHex == entryLower) {
+      pixels[i].style.backgroundColor = pixels[i].getAttribute("defaultBackground")
+    }
+  }
+  document.getElementById(entry).remove();
+}
+
+function paintPixel (pixel) {
+  var swatches = document.querySelectorAll('input[name="colorSelect"]');
+  for (let i = 0; i < swatches.length; i++) {
+    if (swatches[i].checked){
+      var colorSelected = swatches[i].getAttribute("id").replace("radio-entry-", "")
+    };
+  }
+  if (colorSelected == "eraser") {
+    document.getElementById(pixel).style.backgroundColor = document.getElementById(pixel).getAttribute("defaultbackground")
+  } else {
+    document.getElementById(pixel).style.backgroundColor = "#" + colorSelected
+  }
+
+  document.getElementById(pixel).setAttribute("painted", "#" + colorSelected)
+
+}
+
+function clipboardCopyResult () {
+  if (document.getElementById("spriteName").value == "") {
+    alert("You should name the sprite something.")
+    return
+  }
+  var swatches = document.querySelectorAll(".swatch")
+  var colorNames = document.querySelectorAll('input[name="cname"]')
+  var result = {"name": document.getElementById("spriteName").value,
+    "palette": {}, "shape": [
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill(""),
+    Array(16).fill(""), Array(16).fill(""), Array(16).fill(""), Array(16).fill("")
+  ]};
+  for (let i = 0; i < swatches.length; i++) {
+    var rgbList = swatches[i].style.backgroundColor.match(/\d+/g);
+    for (let k = 0; k < rgbList.length; k++) {
+      rgbList[k] =  parseInt(rgbList[k])
+    }
+    result["palette"][colorNames[i].value] = rgbList
+  }
+  for (let i = 1; i < 17; i++) {
+    for (let j = 1; j < 17; j++) {
+      var pixel = document.getElementById("row" + i + "col" + j)
+      if (pixel.getAttribute("painted") == "#eraser") {
+        result["shape"][i - 1][j - 1] = "bg"
+      } else {
+        if (pixel.getAttribute("painted") == "bg") {
+          result["shape"][i - 1][j - 1] = "bg"
+        } else {
+          // Find the name of the color
+          var rgbVals = pixel.style.backgroundColor.match(/\d+/g)
+          for (let k = 0; k < rgbVals.length; k++) {
+            rgbVals[k] = parseInt(rgbVals[k])
+          }
+
+          const keys = Object.keys(result["palette"])
+          keys.forEach((key, index) => {
+            if (rgbVals.toString() == result["palette"][key].toString()) {
+              result["shape"][i - 1][j - 1] = key
+          }});
+
+        }
+      }
+
+    }
+  }
+  navigator.clipboard.writeText(JSON.stringify(result, null, '\t'));
+}
+
+</script>
+
+<style>
+.grid-container {
+  display: flex;
+  background-color: #2196F3;
+  width: 640px;
+}
+
+.palette-form {
+  display: flex;
+  background-color: #2196F3;
+  width: 340px;
+}
+
+.palette {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  left: 680px;
+  top: 150px;
+
+}
+
+.palette-entry {
+  display: flex;
+  width: 140px;
+  padding: 0 10px 10px 0;
+}
+
+.swatch {
+  flex: 1;
+  width: 20px;
+  height: 20px;
+}
+
+.palette-entry-radio {
+  flex: 1;
+  width: 40px;
+  padding: 0 10px 10px 0;
+}
+
+.palette-entry-text {
+  font-size: 15px;
+  flex: 1;
+  padding: 0 10px 10px 0;
+}
+
+.palette-entry-swatch {
+  font-size: 15px;
+  flex: 1;
+  padding: 0 10px 10px 0;
+}
+
+.palette-name {
+  font-size: 15px;
+  flex: 1;
+  padding: 0 10px 10px 0;
+}
+
+.grid-container div {
+  font-size: 30px;
+  width: 40px;
+  height: 40px;
+  flex: 1;
+}
+</style>
+</head>
+<body>
+  <input type="color"
+    id="html5colorpicker"
+    style="width:90px;height:90px;position:absolute;left:680px;"
+    value="#ff0000"
+  >
+  <button
+    style="width:90px;height:90px;position:absolute;left:780px;"
+    onclick="createPaletteEntry()">Create Color Option</button>
+  <button
+    style="width:90px;height:90px;position:absolute;left:880px;"
+    onclick="clipboardCopyResult()">Copy JSON to Clipboard</button>
+
+<div id="palette-form" class="palette">
+  <div class="palette-name">
+  <label for="lname">Sprite Name: </label>
+  <input type="text" id="spriteName" name="spriteName">
+  </div>
+  <div class="palette-entry">
+    <div class="palette-entry-radio">
+    <input id="radio-entry-eraser" type="radio" name="colorSelect">
+    </div>
+    <div class="palette-entry-text">
+    ERASER
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

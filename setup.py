@@ -14,7 +14,7 @@ install_requires = ['pyglet>=1.5.23,<2.0.0']
 
 setup_kwargs = {
     'name': 'tickytacky',
-    'version': '0.5.0',
+    'version': '0.6.0',
     'description': 'Tickytacky pixel game maker',
     'long_description': long_description,
     'long_description_content_type': 'text/markdown',

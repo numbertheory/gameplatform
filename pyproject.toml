@@ -2,6 +2,7 @@
 name = "tickytacky"
 version = "0.6.0"
 description = "Tickytacky pixel game maker"
+readme = "README.md"
 authors = ["JP Etcheber <jetcheber@gmail.com>"]
 license = "GNU General Public License"
 

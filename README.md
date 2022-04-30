@@ -6,6 +6,24 @@
 
 This library aims to make it easy to make retro-style games with Pyglet.
 
+## Install from pypi
+
+Create a virtualenvironment with python3 and install with pip:
+
+```
+pip3 install tickytacky
+```
+
+## Installing with Poetry
+
+Install poetry according to the [poetry docs](https://python-poetry.org/docs).
+
+Then, create a virtual environment with python3 and install with poetry.
+
+```
+poetry install
+```
+
 ## Examples
 
 Examples can be found here, in the examples, repo:

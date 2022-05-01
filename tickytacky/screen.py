@@ -61,6 +61,20 @@ class Screen(pyglet.window.Window):
                                    color=palette.get(shape[r][c]))
         self.sprites[name]["location"] = [location[0], location[1]]
 
+    def draw_all_sprites(self, sprites):
+        max_row_size = 0
+        for name in sprites:
+            if self.sprites[name]["location"]:
+                location = self.sprites[name]["location"]
+                palette = self.sprites[name]["data"].get("palette")
+                shape = self.sprites[name]["data"].get("shape", [])
+                for r in range(0, len(shape)):
+                    for c in range(0, len(shape[r])):
+                        if max_row_size < len(shape[r]):
+                            max_row_size = len(shape[r])
+                        self.set_pixel(pixel=(location[0] + c, location[1] + r),
+                                       color=palette.get(shape[r][c]))
+
     def text(self,
              text="",
              font="Times New Roman",

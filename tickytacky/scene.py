@@ -9,4 +9,5 @@ class Scene():
             title=kwargs.get("title"),
             fixed=kwargs.get("fixed", False),
             height=kwargs.get("height"),
-            width=kwargs.get("width"))
+            width=kwargs.get("width"),
+            pixel_sprites=self.sprites.pixel_sprites)

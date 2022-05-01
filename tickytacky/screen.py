@@ -9,6 +9,7 @@ class Screen(pyglet.window.Window):
         super().__init__(width*factor, height*factor, title)
         self.time = 0
         self.batch = pyglet.graphics.Batch()
+        self.tile_batch = pyglet.graphics.Batch()
         self.height = height
         self.width = width
         self.factor = factor
@@ -62,18 +63,33 @@ class Screen(pyglet.window.Window):
         self.sprites[name]["location"] = [location[0], location[1]]
 
     def draw_all_sprites(self, sprites):
-        max_row_size = 0
         for name in sprites:
             if self.sprites[name]["location"]:
-                location = self.sprites[name]["location"]
-                palette = self.sprites[name]["data"].get("palette")
-                shape = self.sprites[name]["data"].get("shape", [])
-                for r in range(0, len(shape)):
-                    for c in range(0, len(shape[r])):
-                        if max_row_size < len(shape[r]):
-                            max_row_size = len(shape[r])
-                        self.set_pixel(pixel=(location[0] + c, location[1] + r),
-                                       color=palette.get(shape[r][c]))
+                self.set_pixels_in_shape(
+                    shape=self.sprites[name]["data"].get("shape", []),
+                    palette=self.sprites[name]["data"].get("palette"),
+                    location=self.sprites[name]["location"]
+                )
+            sprite_copies = self.sprites[name].get("locations", [])
+            # If locations is a key, then place the tile in all the locations
+            for copy_sprite in sprite_copies:
+                self.set_pixels_in_shape(
+                    shape=self.sprites[name]["data"].get("shape", []),
+                    palette=self.sprites[name]["data"].get("palette"),
+                    location=copy_sprite)
+
+    def set_pixels_in_shape(self, shape, palette, location):
+        # Use only for static sprites. using this for moving sprites makes
+        # some parts of the sprite lag behind.
+        max_row_size = 0
+        for r in range(0, len(shape)):
+            for c in range(0, len(shape[r])):
+                if max_row_size < len(shape[r]):
+                    max_row_size = len(shape[r])
+                self.set_pixel(
+                    pixel=(
+                      location[0] + c, location[1] + r),
+                    color=palette.get(shape[r][c]))
 
     def text(self,
              text="",

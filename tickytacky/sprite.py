@@ -28,7 +28,7 @@ def sprite_32():
     return render_template('sprite_maker32.html')
 
 
-class Sprite():
+class Sprites():
     def __init__(self, sprite_files=[]):
         self.pixel_sprites = []
         for sprite_file in sprite_files:

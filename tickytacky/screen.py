@@ -45,11 +45,13 @@ class Screen(pyglet.window.Window):
                               self.factor, self.factor,
                               color=color, batch=self.batch))
 
-    def add_sprite(self, name, location):
+    def add_sprite(self, name, location=None):
         self.pixel = []
         palette = self.sprites[name]["data"].get("palette")
         shape = self.sprites[name]["data"].get("shape", [])
         max_row_size = 0
+        if not location:
+            return None
         if self.sprites[name]["location"]:
             for r in range(0, len(shape)):
                 for c in range(0, len(shape[r])):
@@ -58,7 +60,6 @@ class Screen(pyglet.window.Window):
                     self.set_pixel(pixel=(location[0] + c, location[1] + r),
                                    color=palette.get(shape[r][c]))
         self.sprites[name]["location"] = [location[0], location[1]]
-        self.batch.draw()
 
     def text(self,
              text="",
@@ -77,6 +78,5 @@ class Screen(pyglet.window.Window):
                           anchor_x=anchors[0], anchor_y=anchors[1])
 
     def on_draw(self):
-        """Clear the screen and draw shapes"""
         self.clear()
         self.batch.draw()

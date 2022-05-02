@@ -7,25 +7,36 @@ import json
 class Scene():
     def __init__(self, **kwargs):
         self.sprites = Sprites(kwargs.get("sprites"))
+        self.height = kwargs.get("height")
+        self.width = kwargs.get("width")
         self.window = Screen(
             title=kwargs.get("title"),
             fixed=kwargs.get("fixed", False),
-            height=kwargs.get("height"),
-            width=kwargs.get("width"),
+            height=self.height,
+            width=self.width,
             pixel_sprites=self.sprites.pixel_sprites)
         self.tiles = Tiles(tile_files=kwargs.get("tile_files", []))
         self.scenes = self.scene_data(scene_data=kwargs.get("scene_data"))
-        self.current_scene = "scene1"
+        self.current_scene = self.scenes.get("default_scene")
+
+    def pixel_system(self, x, y):
+        _width = self.window.width - 1
+        _height = self.window.height - 1
+        _x = x * self.window.factor
+        _y = ((y*-1 + 150) * self.window.factor)
+        f = self.window.factor
+        converted_coords = [(_width * f) - _width * f + _x,
+                            (_height * f) - _height * f + _y]
+        return converted_coords
 
     def load_scene(self, new_scene):
         self.current_scene = new_scene
         self.scene = []
         for tile in self.scenes[new_scene]:
-            x = tile[1]
-            y = tile[2]
+            coords = self.pixel_system(tile[1], tile[2])
             self.scene.append(
                 Sprite(self.tiles.tile_data[tile[0]],
-                       x=x, y=y, batch=self.window.batch)
+                       x=coords[0], y=coords[1], batch=self.window.batch)
             )
         self.window.batch.draw()
 

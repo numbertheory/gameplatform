@@ -1,6 +1,9 @@
 import json
 from flask import Flask, render_template
 import logging
+import tempfile
+import pyglet
+from PIL import Image, ImageDraw
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
@@ -39,6 +42,38 @@ class Sprites():
             )
 
     def load_sprite_file(self, file):
+        with open(file, "r") as json_file:
+            sprite = json.load(json_file)
+        return sprite
+
+
+class Tiles():
+    def __init__(self, factor=6, tile_files=[]):
+        self.tile_data = dict()
+        for tile_file in tile_files:
+            data = self.load_tile_file(tile_file)
+            png_image = Image.new('RGB',
+                                  (len(data["shape"][0])*factor,
+                                   len(data["shape"])*factor))
+            for row in range(0, len(data["shape"])):
+                for col in range(0, len(data["shape"][row])):
+                    color = data["palette"].get(
+                        data["shape"][row][col], [0, 0, 0]
+                    )
+                    draw_obj = ImageDraw.Draw(png_image)
+                    draw_obj.rectangle(
+                        [col*factor, row*factor,
+                         (col*factor)+factor, (row*factor)+factor],
+                        fill=(color[0], color[1], color[2])
+                    )
+
+            with tempfile.NamedTemporaryFile(suffix=".png") as tmp_file:
+                png_image.save(tmp_file.name)
+                self.tile_data[data.get("name")] = pyglet.image.load(
+                    tmp_file.name
+                )
+
+    def load_tile_file(self, file):
         with open(file, "r") as json_file:
             sprite = json.load(json_file)
         return sprite

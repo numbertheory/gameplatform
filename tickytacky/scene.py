@@ -18,6 +18,7 @@ class Scene():
         self.tiles = Tiles(tile_files=kwargs.get("tile_files", []))
         self.scenes = self.scene_data(scene_data=kwargs.get("scene_data"))
         self.current_scene = self.scenes.get("default_scene")
+        self.walls = []
 
     def pixel_system(self, x, y):
         _width = self.window.width - 1
@@ -35,9 +36,15 @@ class Scene():
         for tile in self.scenes[new_scene]:
             coords = self.pixel_system(tile[1], tile[2])
             self.scene.append(
-                Sprite(self.tiles.tile_data[tile[0]],
+                Sprite(self.tiles.tile_data[tile[0]]["image_data"],
                        x=coords[0], y=coords[1], batch=self.window.batch)
             )
+            if self.tiles.tile_data[tile[0]].get("wall"):
+                x_length = self.tiles.tile_data[tile[0]]["dimensions"][0]
+                y_length = self.tiles.tile_data[tile[0]]["dimensions"][1]
+                self.walls.append([coords[0], coords[1],
+                                   x_length + coords[0],
+                                   y_length + coords[1]])
         self.window.batch.draw()
 
     def scene_data(self, scene_data):

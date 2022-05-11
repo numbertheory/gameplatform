@@ -69,9 +69,10 @@ class Tiles():
 
             with tempfile.NamedTemporaryFile(suffix=".png") as tmp_file:
                 png_image.save(tmp_file.name)
-                self.tile_data[data.get("name")] = pyglet.image.load(
-                    tmp_file.name
-                )
+                self.tile_data[data.get("name")] = \
+                    {"image_data": pyglet.image.load(tmp_file.name),
+                     "dimensions": [10, 10],
+                     "wall": data.get("wall", False)}
 
     def load_tile_file(self, file):
         with open(file, "r") as json_file:

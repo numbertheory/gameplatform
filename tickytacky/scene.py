@@ -42,9 +42,9 @@ class Scene():
             if self.tiles.tile_data[tile[0]].get("wall"):
                 x_length = self.tiles.tile_data[tile[0]]["dimensions"][0]
                 y_length = self.tiles.tile_data[tile[0]]["dimensions"][1]
-                self.walls.append([coords[0], coords[1],
-                                   x_length + coords[0],
-                                   y_length + coords[1]])
+                self.walls.append([tile[1], tile[2],
+                                   x_length + tile[1],
+                                   y_length + tile[2]])
         self.window.batch.draw()
 
     def scene_data(self, scene_data):

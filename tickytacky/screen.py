@@ -20,6 +20,7 @@ class Screen(pyglet.window.Window):
             self.sprites[sprite["name"]] = {
                 "name": sprite.get("name"),
                 "data": sprite.get("data"),
+                "size": sprite.get("size"),
                 "location": sprite.get("location")}
 
         if fixed:

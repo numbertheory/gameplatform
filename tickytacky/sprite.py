@@ -36,9 +36,14 @@ class Sprites():
         self.pixel_sprites = []
         for sprite_file in sprite_files:
             data = self.load_sprite_file(sprite_file)
+            max_width = 0
+            for shape_row in data["shape"]:
+                if max_width < len(shape_row):
+                    max_width = len(shape_row)
             self.pixel_sprites.append(
                 {"name": data.get("name"),
-                 "data": data}
+                 "data": data,
+                 "size": [max_width, len(data["shape"])]}
             )
 
     def load_sprite_file(self, file):
